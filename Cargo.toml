@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 chess = "3.2.0"
+mcts = "0.3.0"
 tch = { version = "0.15.0", features = ["download-libtorch"] }
 rand = "0.8"
 rayon = "1.5"

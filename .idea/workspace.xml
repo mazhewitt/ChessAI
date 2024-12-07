@@ -41,6 +41,7 @@
     "Cargo.Build `Test game::tests::test_promotion`.executor": "Run",
     "Cargo.Build `Test game::tests::test_stalemate_detection_korchnoi_karpov`.executor": "Run",
     "Cargo.Build `Test game::tests`.executor": "Run",
+    "Cargo.Build `Test mcts::tests`.executor": "Run",
     "Cargo.Test game::test_initial_moves_count.executor": "Run",
     "Cargo.Test game::tests.executor": "Run",
     "Cargo.Test game::tests::test_castling.executor": "Run",
@@ -48,9 +49,11 @@
     "Cargo.Test game::tests::test_checkmate_detection.executor": "Run",
     "Cargo.Test game::tests::test_en_passant.executor": "Run",
     "Cargo.Test game::tests::test_fifty_move_rule.executor": "Run",
+    "Cargo.Test game::tests::test_game_results.executor": "Run",
     "Cargo.Test game::tests::test_insufficient_material.executor": "Run",
     "Cargo.Test game::tests::test_promotion.executor": "Run",
     "Cargo.Test game::tests::test_stalemate_detection_korchnoi_karpov.executor": "Run",
+    "Cargo.Test mcts::tests.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.rust.reset.selective.auto.import": "true",
@@ -66,7 +69,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Cargo.Test game::tests::test_castling_rights_lost_after_king_moves">
+  <component name="RunManager" selected="Cargo.Test mcts::tests">
     <configuration name="Run" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
       <option name="command" value="run --package ChessAI --bin ChessAI" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$" />
@@ -135,8 +138,8 @@
         <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Test game::tests::test_en_passant" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
-      <option name="command" value="test --package ChessAI --lib game::tests::test_en_passant -- --exact" />
+    <configuration name="Test game::tests::test_game_results" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
+      <option name="command" value="test --package ChessAI --lib game::tests::test_game_results -- --exact" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$" />
       <envs />
       <option name="emulateTerminal" value="true" />
@@ -152,8 +155,8 @@
         <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Test game::tests::test_promotion" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
-      <option name="command" value="test --package ChessAI --lib game::tests::test_promotion -- --exact" />
+    <configuration name="Test mcts::tests" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
+      <option name="command" value="test --package ChessAI --lib mcts::tests" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$" />
       <envs />
       <option name="emulateTerminal" value="true" />
@@ -171,11 +174,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Cargo.Test mcts::tests" />
+        <item itemvalue="Cargo.Test game::tests::test_game_results" />
+        <item itemvalue="Cargo.Test game::tests" />
         <item itemvalue="Cargo.Test game::tests::test_castling_rights_lost_after_king_moves" />
         <item itemvalue="Cargo.Test game::tests::test_castling" />
-        <item itemvalue="Cargo.Test game::tests" />
-        <item itemvalue="Cargo.Test game::tests::test_promotion" />
-        <item itemvalue="Cargo.Test game::tests::test_en_passant" />
       </list>
     </recent_temporary>
   </component>
@@ -191,22 +194,11 @@
       <option name="presentableId" value="Default" />
       <updated>1733348873476</updated>
       <workItem from="1733348874938" duration="1742000" />
-      <workItem from="1733590798087" duration="9741000" />
+      <workItem from="1733590798087" duration="13402000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/src/game.rs</url>
-          <line>415</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

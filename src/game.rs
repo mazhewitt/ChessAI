@@ -1,7 +1,7 @@
 use std::fmt;
 use std::str::FromStr;
 use std::collections::HashMap;
-use chess::{Board, MoveGen, ChessMove, BoardStatus, Square, Piece};
+use chess::{Board, MoveGen, ChessMove, BoardStatus, Square, Piece, Color};
 
 #[derive(Clone, Debug)]
 pub struct Game {
@@ -10,6 +10,13 @@ pub struct Game {
 }
 
 
+
+#[derive(Debug, PartialEq)]
+pub enum GameResult {
+    WhiteWin,
+    BlackWin,
+    Draw
+}
 
 impl Game {
     pub fn new() -> Self {
@@ -20,6 +27,10 @@ impl Game {
         };
         g.increment_position_count();
         g
+    }
+
+    pub(crate) fn get_hash(&self) -> u64 {
+        self.board.get_hash()
     }
 
 
@@ -47,8 +58,6 @@ impl Game {
             return true;
         }
 
-        // ... your existing checkmate/stalemate/insufficient material logic ...
-        // For example:
         let status = self.board.status();
         if status != chess::BoardStatus::Ongoing {
             return true;
@@ -186,7 +195,50 @@ impl Game {
         }
     }
 
+    pub fn get_game_result(&self) -> Option<GameResult> {
+        if !self.is_terminal() {
+            return None;
+        }
 
+        // Check for threefold repetition
+        if self.is_threefold_repetition() {
+            return Some(GameResult::Draw);
+        }
+
+        // Check for insufficient material
+        if has_insufficient_material(&self.board) {
+            return Some(GameResult::Draw);
+        }
+
+        // If there are no legal moves
+        if MoveGen::new_legal(&self.board).count() == 0 {
+            // If the current player is in check, it's checkmate
+            if self.board.checkers().popcnt() > 0 {
+                // If White is in check, Black wins and vice versa
+                return Some(if self.board.side_to_move() == Color::White {
+                    GameResult::BlackWin
+                } else {
+                    GameResult::WhiteWin
+                });
+            } else {
+                // Stalemate
+                return Some(GameResult::Draw);
+            }
+        }
+
+        Some(GameResult::Draw) // Default to draw for other terminal positions
+    }
+
+    pub fn result_value(&self) -> f32 {
+        let status = self.get_game_result();
+        match status {
+            //white win
+            Some(GameResult::WhiteWin) => 1.0,
+            Some(GameResult::BlackWin) => -1.0,
+            Some(GameResult::Draw) => 0.0,
+            _ => 0.0
+        }
+    }
 
 }
 
@@ -518,6 +570,38 @@ mod tests {
     }
 
     */
+
+    #[test]
+    fn test_game_results() {
+        // Test checkmate (Scholar's mate)
+        let mut game = Game::new();
+        game.make_move("e2e4").unwrap();
+        game.make_move("e7e5").unwrap();
+        game.make_move("f1c4").unwrap();
+        game.make_move("b8c6").unwrap();
+        game.make_move("d1h5").unwrap();
+        game.make_move("g8f6").unwrap();
+        game.make_move("h5f7").unwrap();
+
+        assert!(game.is_terminal());
+        assert_eq!(game.get_game_result(), Some(GameResult::WhiteWin));
+
+
+        // Test threefold repetition
+        let mut game = Game::new();
+        // Make moves that repeat the position three times
+        game.make_move("g1f3").unwrap();
+        game.make_move("g8f6").unwrap();
+        game.make_move("f3g1").unwrap();
+        game.make_move("f6g8").unwrap();
+        game.make_move("g1f3").unwrap();
+        game.make_move("g8f6").unwrap();
+        game.make_move("f3g1").unwrap();
+        game.make_move("f6g8").unwrap();
+
+        assert!(game.is_terminal());
+        assert_eq!(game.get_game_result(), Some(GameResult::Draw));
+    }
 
     #[test]
     fn test_encoding_initial_position() {
