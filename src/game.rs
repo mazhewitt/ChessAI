@@ -30,26 +30,25 @@ impl Game {
 
     pub fn is_terminal(&self) -> bool {
         let status = self.board.status();
-
         if status == chess::BoardStatus::Ongoing {
-            // Manually check for legal moves as a fallback
-            let legal_moves = MoveGen::new_legal(&self.board);
-            if legal_moves.count() == 0 {
-                let king_square = self.board.king_square(self.board.side_to_move());
-                // Use bitwise operation to check if the king is in check
-                if self.board.checkers() & chess::BitBoard::from_square(king_square) == chess::BitBoard::new(0) {
-                    println!("Detected stalemate manually.");
-                    return true; // Stalemate detected
-                }
+            // If we rely on our custom insufficient material check:
+            if has_insufficient_material(&self.board) {
+                return true;
             }
-            return false; // Game is ongoing
+            // Also check if there are no legal moves and not in check (then it's stalemate)
+            if MoveGen::new_legal(&self.board).count() == 0 {
+                return true; // Stalemate
+            }
+            return false;
         }
-
-        // Return true if the status is Checkmate or Stalemate
-        status == chess::BoardStatus::Stalemate || status == chess::BoardStatus::Checkmate
+        // If status is already Checkmate or Stalemate (if the crate sets it, e.g., threefold repetition or 50-move rule)
+        status != chess::BoardStatus::Ongoing
     }
 
     pub fn legal_moves(&self) -> Vec<String> {
+        if self.is_terminal() {
+            return Vec::new();
+        }
         // Generate all legal moves from current position
         let movegen = MoveGen::new_legal(&self.board);
         movegen.map(|m| m.to_string()).collect()
@@ -106,6 +105,92 @@ impl Game {
             Err(e) => Err(format!("Invalid FEN: {}", e))
         }
     }
+
+
+
+
+}
+
+fn has_insufficient_material(board: &chess::Board) -> bool {
+    use chess::Piece;
+    // Count pieces by type
+    let mut white_pieces = Vec::new();
+    let mut black_pieces = Vec::new();
+
+    for sq in chess::ALL_SQUARES {
+        if let Some(piece) = board.piece_on(sq) {
+            let color = board.color_on(sq).unwrap();
+            if color == chess::Color::White {
+                white_pieces.push(piece);
+            } else {
+                black_pieces.push(piece);
+            }
+        }
+    }
+
+    // Combine all pieces for easier logic
+    let all_pieces: Vec<chess::Piece> = white_pieces.iter().chain(black_pieces.iter()).copied().collect();
+
+    // Check if any piece that can generate mate scenarios exists
+    // Pawns, Queens, and Rooks always mean sufficient material (unless no other conditions are met).
+    if all_pieces.iter().any(|&p| p == Piece::Pawn || p == Piece::Rook || p == Piece::Queen) {
+        return false;
+    }
+
+    // Now we have only Kings, possibly Bishops, and/or Knights
+    let num_knights = all_pieces.iter().filter(|&&p| p == Piece::Knight).count();
+    let num_bishops = all_pieces.iter().filter(|&&p| p == Piece::Bishop).count();
+    // We know there are exactly two kings on the board (if the board is valid).
+
+    // Cases:
+    // 1. K vs K
+    if all_pieces.len() == 2 {
+        return true; // Only kings
+    }
+
+    // 2. K+N vs K
+    if num_knights == 1 && num_bishops == 0 && all_pieces.len() == 3 {
+        return true;
+    }
+    // K+N vs K+N is also insufficient (no forced mate), but that's a rare known theoretical position.
+    // If you'd like to consider K+N vs K+N as insufficient:
+    if num_knights == 2 && num_bishops == 0 && all_pieces.len() == 4 {
+        return true;
+    }
+
+    // 3. K+B vs K
+    if num_bishops == 1 && num_knights == 0 && all_pieces.len() == 3 {
+        return true;
+    }
+
+    // 4. K+B vs K+B both on same color
+    if num_bishops == 2 && num_knights == 0 && all_pieces.len() == 4 {
+        // Find the squares of the bishops
+        let mut bishop_squares = Vec::new();
+        for sq in chess::ALL_SQUARES {
+            if let Some(piece) = board.piece_on(sq) {
+                if piece == Piece::Bishop {
+                    bishop_squares.push(sq);
+                }
+            }
+        }
+
+        // Check bishop color complexes
+        // Light squares have (file + rank) even sum, dark squares have odd.
+        let colors: Vec<bool> = bishop_squares.iter().map(|&sq| {
+            let file = sq.get_rank().to_index();
+            let rank = sq.get_file().to_index();
+            ((file + rank) % 2) == 0
+        }).collect();
+
+        // If all bishops are on the same color squares
+        if colors.iter().all(|&c| c == colors[0]) {
+            return true;
+        }
+    }
+
+    // If none of the above conditions met, assume material is sufficient
+    false
 }
 
 
@@ -188,7 +273,7 @@ mod tests {
 
     #[test]
     fn test_stalemate_detection_korchnoi_karpov() {
-        let stalemate_fen = "8/5BK1/8/8/8/8/p7/k7 b - - 0 1";
+        let stalemate_fen = "7k/5Q2/8/8/8/8/8/7K b - - 0 1";
         let game = Game::from_fen(stalemate_fen)
             .expect("Should be able to create a board from a legal stalemate FEN");
 
@@ -198,6 +283,19 @@ mod tests {
         assert!(game.is_terminal(), "Game should be terminal due to stalemate.");
         let legal_moves = game.legal_moves();
         assert_eq!(legal_moves.len(), 0, "No legal moves should be available in stalemate.");
+    }
+
+    #[test]
+    fn test_insufficient_material() {
+        let fen = "8/8/8/8/8/6K1/8/2k5 w - - 0 1";
+        let game = Game::from_fen(fen).expect("Should parse fen for kings only");
+        println!("{:?}", game);
+        // Now you must ensure your `is_terminal()` recognizes insufficient material as a terminal state.
+        // Check the crate's `BoardStatus` enum. Insufficient material should lead to a `Draw` status.
+        assert!(game.is_terminal(), "Game should be terminal due to insufficient material.");
+        let legal_moves = game.legal_moves();
+        assert_eq!(legal_moves.len(), 0, "No legal moves expected due to insufficient material.");
+
     }
 
 }
