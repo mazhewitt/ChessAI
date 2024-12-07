@@ -656,7 +656,5 @@ mod tests {
         let e4_index = 168;
         let e4_slice = &encoded[e4_index..e4_index+6];
         assert_eq!(e4_slice, &[0.0,0.0,0.0,0.0,0.0,0.0], "e4 should be empty");
-
-        // If we reach here, the test passes for these checks.
     }
 }

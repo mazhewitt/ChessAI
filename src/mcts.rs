@@ -49,14 +49,17 @@ impl Evaluator<MyMCTS> for ChessEvaluator {
         moves: &Vec<String>,
         _: Option<SearchHandle<MyMCTS>>,
     ) -> (Vec<()>, f64) {
-        // Implement your evaluation logic here
-        // For example, use a neural network to evaluate the state
         let value = self.evaluate_state(state);
         (vec![(); moves.len()], value)
     }
 
-    fn interpret_evaluation_for_player(&self, eval: &f64, _player: &String) -> i64 {
-        *eval as i64
+    fn interpret_evaluation_for_player(&self, eval: &f64, player: &String) -> i64 {
+        let value = if player == "White" {
+            *eval
+        } else {
+            -(*eval)  // Negate value for Black
+        };
+        (value * 10000.0) as i64
     }
 
     fn evaluate_existing_state(
