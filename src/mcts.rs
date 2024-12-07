@@ -16,15 +16,13 @@ impl ChessMCTSState {
 
 impl TranspositionHash for ChessMCTSState {
     fn hash(&self) -> u64 {
-        // Implement a hashing function for your game state
-        // This could be based on a Zobrist hash or another method
         self.game.get_hash()
     }
 }
 
 impl GameState for ChessMCTSState {
-    type Move = String; // Adjust based on your move representation
-    type Player = String; // Adjust based on your player representation
+    type Move = String;
+    type Player = String;
     type MoveList = Vec<Self::Move>;
 
     fn current_player(&self) -> Self::Player {
@@ -73,9 +71,17 @@ impl Evaluator<MyMCTS> for ChessEvaluator {
 
 impl ChessEvaluator {
     fn evaluate_state(&self, state: &ChessMCTSState) -> f64 {
-        // Implement your state evaluation logic
-        // This could involve heuristics or a neural network
-        0.0 // Placeholder
+        // Use the existing result_value() function for terminal states
+        let terminal_value = state.game.result_value();
+        if terminal_value != 0.0 {
+            // Convert f32 to f64, since the Evaluator trait uses f64
+            return terminal_value as f64;
+        }
+
+        // If the state is not terminal, implement additional evaluation logic here
+        // For now, we'll use 0.0 as a placeholder
+        // Replace this with heuristic evaluations or a neural network call
+        0.0
     }
 }
 
