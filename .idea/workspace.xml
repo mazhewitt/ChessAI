@@ -38,11 +38,18 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Cargo.Build `Test game::tests::test_insufficient_material`.executor": "Run",
+    "Cargo.Build `Test game::tests::test_promotion`.executor": "Run",
     "Cargo.Build `Test game::tests::test_stalemate_detection_korchnoi_karpov`.executor": "Run",
+    "Cargo.Build `Test game::tests`.executor": "Run",
     "Cargo.Test game::test_initial_moves_count.executor": "Run",
     "Cargo.Test game::tests.executor": "Run",
+    "Cargo.Test game::tests::test_castling.executor": "Run",
+    "Cargo.Test game::tests::test_castling_rights_lost_after_king_moves.executor": "Run",
     "Cargo.Test game::tests::test_checkmate_detection.executor": "Run",
+    "Cargo.Test game::tests::test_en_passant.executor": "Run",
+    "Cargo.Test game::tests::test_fifty_move_rule.executor": "Run",
     "Cargo.Test game::tests::test_insufficient_material.executor": "Run",
+    "Cargo.Test game::tests::test_promotion.executor": "Run",
     "Cargo.Test game::tests::test_stalemate_detection_korchnoi_karpov.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -59,27 +66,9 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Cargo.Test game::tests">
+  <component name="RunManager" selected="Cargo.Test game::tests::test_castling_rights_lost_after_king_moves">
     <configuration name="Run" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
       <option name="command" value="run --package ChessAI --bin ChessAI" />
-      <option name="workingDirectory" value="file://$PROJECT_DIR$" />
-      <envs />
-      <option name="emulateTerminal" value="true" />
-      <option name="channel" value="DEFAULT" />
-      <option name="requiredFeatures" value="true" />
-      <option name="allFeatures" value="false" />
-      <option name="withSudo" value="false" />
-      <option name="buildTarget" value="REMOTE" />
-      <option name="backtrace" value="SHORT" />
-      <option name="isRedirectInput" value="false" />
-      <option name="redirectInputPath" value="" />
-      <method v="2">
-        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Test game::test_initial_moves_count" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
-      <option name="buildProfileId" value="test" />
-      <option name="command" value="test --package ChessAI --lib game::test_initial_moves_count -- --exact" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$" />
       <envs />
       <option name="emulateTerminal" value="true" />
@@ -112,8 +101,8 @@
         <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Test game::tests::test_checkmate_detection" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
-      <option name="command" value="test --package ChessAI --lib game::tests::test_checkmate_detection -- --exact" />
+    <configuration name="Test game::tests::test_castling" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
+      <option name="command" value="test --package ChessAI --lib game::tests::test_castling -- --exact" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$" />
       <envs />
       <option name="emulateTerminal" value="true" />
@@ -129,8 +118,8 @@
         <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Test game::tests::test_insufficient_material" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
-      <option name="command" value="test --package ChessAI --lib game::tests::test_insufficient_material -- --exact" />
+    <configuration name="Test game::tests::test_castling_rights_lost_after_king_moves" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
+      <option name="command" value="test --package ChessAI --lib game::tests::test_castling_rights_lost_after_king_moves -- --exact" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$" />
       <envs />
       <option name="emulateTerminal" value="true" />
@@ -146,8 +135,25 @@
         <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Test game::tests::test_stalemate_detection_korchnoi_karpov" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
-      <option name="command" value="test --package ChessAI --lib game::tests::test_stalemate_detection_korchnoi_karpov -- --exact" />
+    <configuration name="Test game::tests::test_en_passant" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
+      <option name="command" value="test --package ChessAI --lib game::tests::test_en_passant -- --exact" />
+      <option name="workingDirectory" value="file://$PROJECT_DIR$" />
+      <envs />
+      <option name="emulateTerminal" value="true" />
+      <option name="channel" value="DEFAULT" />
+      <option name="requiredFeatures" value="true" />
+      <option name="allFeatures" value="false" />
+      <option name="withSudo" value="false" />
+      <option name="buildTarget" value="REMOTE" />
+      <option name="backtrace" value="SHORT" />
+      <option name="isRedirectInput" value="false" />
+      <option name="redirectInputPath" value="" />
+      <method v="2">
+        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Test game::tests::test_promotion" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
+      <option name="command" value="test --package ChessAI --lib game::tests::test_promotion -- --exact" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$" />
       <envs />
       <option name="emulateTerminal" value="true" />
@@ -165,11 +171,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Cargo.Test game::tests::test_castling_rights_lost_after_king_moves" />
+        <item itemvalue="Cargo.Test game::tests::test_castling" />
         <item itemvalue="Cargo.Test game::tests" />
-        <item itemvalue="Cargo.Test game::tests::test_insufficient_material" />
-        <item itemvalue="Cargo.Test game::tests::test_stalemate_detection_korchnoi_karpov" />
-        <item itemvalue="Cargo.Test game::tests::test_checkmate_detection" />
-        <item itemvalue="Cargo.Test game::test_initial_moves_count" />
+        <item itemvalue="Cargo.Test game::tests::test_promotion" />
+        <item itemvalue="Cargo.Test game::tests::test_en_passant" />
       </list>
     </recent_temporary>
   </component>
@@ -185,11 +191,22 @@
       <option name="presentableId" value="Default" />
       <updated>1733348873476</updated>
       <workItem from="1733348874938" duration="1742000" />
-      <workItem from="1733590798087" duration="4971000" />
+      <workItem from="1733590798087" duration="9741000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/game.rs</url>
+          <line>415</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
