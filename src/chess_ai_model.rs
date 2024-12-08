@@ -1,6 +1,4 @@
 
-use crate::game::Game;
-use crate::mcts::{ChessModel, ModelOutput};
 use tch::{nn, nn::Module, Device, Tensor};
 use std::sync::{Arc, Mutex};
 
@@ -32,24 +30,4 @@ impl ChessAIModel {
     }
 }
 
-pub struct RealChessModel {
-    ai_model: Arc<ChessAIModel>,
-}
 
-impl RealChessModel {
-    pub fn new() -> Self {
-        RealChessModel {
-            ai_model: Arc::new(ChessAIModel::new()),
-        }
-    }
-}
-
-impl ChessModel for RealChessModel {
-    fn evaluate(&self, game: &Game) -> ModelOutput {
-        let input_tensor = Tensor::from_slice(&game.encode());
-        let value = self.ai_model.evaluate(&input_tensor);
-        // Placeholder for policy vector
-        let policy = vec![1.0 / game.legal_moves().len() as f64; game.legal_moves().len()];
-        ModelOutput { value, policy }
-    }
-}

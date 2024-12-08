@@ -1,7 +1,10 @@
+use std::sync::Arc;
 use mcts::{Evaluator, GameState, SearchHandle, MCTS};
 use crate::game::Game;
 use mcts::transposition_table::{ApproxTable, TranspositionHash};
 use mcts::tree_policy::UCTPolicy;
+use tch::Tensor;
+use crate::chess_ai_model::ChessAIModel;
 
 #[derive(Clone)]
 pub struct ChessMCTSState {
@@ -126,6 +129,28 @@ impl Evaluator<ChessMCTS> for ChessEvaluator {
     }
 }
 
+pub struct RealChessModel {
+    ai_model: Arc<ChessAIModel>,
+}
+
+impl RealChessModel {
+    pub fn new() -> Self {
+        RealChessModel {
+            ai_model: Arc::new(ChessAIModel::new()),
+        }
+    }
+}
+
+impl ChessModel for RealChessModel {
+    fn evaluate(&self, game: &Game) -> ModelOutput {
+        let input_tensor = Tensor::from_slice(&game.encode());
+        let value = self.ai_model.evaluate(&input_tensor);
+        // Placeholder for policy vector
+        let policy = vec![1.0 / game.legal_moves().len() as f64; game.legal_moves().len()];
+        ModelOutput { value, policy }
+    }
+}
+
 
 #[cfg(test)]
 mod tests {
@@ -192,5 +217,35 @@ mod tests {
         assert!(best_move.is_some(), "MCTS should find a best move.");
 
         // Additional checks can be added here to verify the behavior
+    }
+
+    #[test]
+    fn test_real_model_evaluation() {
+        let game = Game::new();
+        let model = RealChessModel::new();
+        let input_tensor = tch::Tensor::from_slice(&game.encode());
+        let output = model.evaluate(&game);
+
+        assert!(output.value.abs() <= 1.0, "Model evaluation value should be within [-1, 1].");
+        assert_eq!(output.policy.len(), game.legal_moves().len(), "Model policy output length should match the number of legal moves.");
+    }
+
+    #[test]
+    fn test_mcts_with_real_model() {
+        let game = Game::new();
+        let model = RealChessModel::new();
+        let state = ChessMCTSState::new(game);
+        let evaluator = ChessEvaluator { model: Box::new(model) };
+        let mut mcts = MCTSManager::new(
+            state,
+            ChessMCTS,
+            evaluator,
+            UCTPolicy::new(0.5),
+            ApproxTable::new(1024),
+        );
+
+        mcts.playout_n_parallel(1000, 4);
+        let best_move = mcts.best_move();
+        assert!(best_move.is_some(), "MCTS should return a best move.");
     }
 }

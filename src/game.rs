@@ -53,10 +53,6 @@ impl Game {
         self.positions.values().any(|&count| count >= 3)
     }
 
-    pub fn get_next_move(&self, mcts: &mut MCTSManager<ChessMCTS>) -> Option<String> {
-        mcts.playout_n_parallel(1000, 4); // Example: Run 1000 playouts with 4 threads
-        mcts.best_move()
-    }
 
     pub fn is_terminal(&self) -> bool {
         // If threefold repetition detected, it's terminal (draw)
