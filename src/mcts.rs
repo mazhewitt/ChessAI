@@ -126,6 +126,7 @@ impl Evaluator<ChessMCTS> for ChessEvaluator {
     }
 }
 
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -186,6 +187,8 @@ mod tests {
         mcts.playout_n_parallel(1000, 4); // 1,000 playouts with 4 threads
 
         let best_move = mcts.best_move();
+        // print the best move
+        println!("{:?}", best_move);
         assert!(best_move.is_some(), "MCTS should find a best move.");
 
         // Additional checks can be added here to verify the behavior
