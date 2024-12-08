@@ -2,6 +2,8 @@ use std::fmt;
 use std::str::FromStr;
 use std::collections::HashMap;
 use chess::{Board, MoveGen, ChessMove, BoardStatus, Square, Piece, Color};
+use mcts::MCTSManager;
+use crate::mcts::ChessMCTS;
 
 #[derive(Clone, Debug)]
 pub struct Game {
@@ -49,6 +51,11 @@ impl Game {
 
     pub fn is_threefold_repetition(&self) -> bool {
         self.positions.values().any(|&count| count >= 3)
+    }
+
+    pub fn get_next_move(&self, mcts: &mut MCTSManager<ChessMCTS>) -> Option<String> {
+        mcts.playout_n_parallel(1000, 4); // Example: Run 1000 playouts with 4 threads
+        mcts.best_move()
     }
 
     pub fn is_terminal(&self) -> bool {

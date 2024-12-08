@@ -7,7 +7,11 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4df135c0-b0d0-42e0-8cdb-33d5fa506493" name="Changes" comment="" />
+    <list default="true" id="4df135c0-b0d0-42e0-8cdb-33d5fa506493" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/game.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mcts.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/mcts.rs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -24,6 +28,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "mazhewitt"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "git@github.com:mazhewitt/ChessAI.git",
+    "accountId": "1b5c3420-a96e-4ff2-a484-81fc83244aef"
+  }
+}]]></component>
   <component name="MacroExpansionManager">
     <option name="directoryName" value="15gtc5ob" />
   </component>
@@ -57,7 +73,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.rust.reset.selective.auto.import": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "main",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -194,7 +210,8 @@
       <option name="presentableId" value="Default" />
       <updated>1733348873476</updated>
       <workItem from="1733348874938" duration="1742000" />
-      <workItem from="1733590798087" duration="16046000" />
+      <workItem from="1733590798087" duration="17923000" />
+      <workItem from="1733665885891" duration="1928000" />
     </task>
     <servers />
   </component>
