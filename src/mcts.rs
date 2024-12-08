@@ -139,6 +139,11 @@ impl RealChessModel {
             ai_model: Arc::new(ChessAIModel::new()),
         }
     }
+    pub fn from_file(filepath: &str) -> Self {
+        RealChessModel {
+            ai_model: Arc::new(ChessAIModel::from_file(filepath)),
+        }
+    }
 }
 
 impl ChessModel for RealChessModel {
@@ -248,4 +253,22 @@ mod tests {
         let best_move = mcts.best_move();
         assert!(best_move.is_some(), "MCTS should return a best move.");
     }
+
+    #[test]
+    fn test_model_save_and_load() {
+        let model = RealChessModel::new();
+        let filepath = "dummy_model_file";
+
+        // Save the model to a file
+        model.ai_model.save_to_file(filepath);
+
+        // Load the model from the file
+        let loaded_model = RealChessModel::from_file(filepath);
+        let game = Game::new();
+        let output = loaded_model.evaluate(&game);
+
+        assert!(output.value.abs() <= 1.0, "Model evaluation value should be within [-1, 1].");
+        assert_eq!(output.policy.len(), game.legal_moves().len(), "Model policy output length should match the number of legal moves.");
+    }
+
 }

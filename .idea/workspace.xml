@@ -8,9 +8,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4df135c0-b0d0-42e0-8cdb-33d5fa506493" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/chess_ai_model.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chess_ai_model.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/chess_ai_model.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/mcts.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/mcts.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -73,6 +72,9 @@
     "Cargo.Test game::tests::test_stalemate_detection_korchnoi_karpov.executor": "Run",
     "Cargo.Test mcts::tests.executor": "Run",
     "Cargo.Test mcts::tests::test_mcts_with_mock_model.executor": "Run",
+    "Cargo.Test mcts::tests::test_mcts_with_real_model.executor": "Run",
+    "Cargo.Test mcts::tests::test_real_model_evaluation.executor": "Run",
+    "Cargo.Test test_mcts_with_real_model.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.rust.reset.selective.auto.import": "true",
@@ -88,7 +90,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Cargo.Test mcts::tests::test_mcts_with_mock_model">
+  <component name="RunManager" selected="Cargo.Test mcts::tests::test_model_save_and_load">
     <configuration name="Run" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
       <option name="command" value="run --package ChessAI --bin ChessAI" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$" />
@@ -123,8 +125,8 @@
         <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Test game::tests::test_castling_rights_lost_after_king_moves" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
-      <option name="command" value="test --package ChessAI --lib game::tests::test_castling_rights_lost_after_king_moves -- --exact" />
+    <configuration name="Test mcts::tests::test_mcts_with_real_model" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
+      <option name="command" value="test --package ChessAI --lib mcts::tests::test_mcts_with_real_model -- --exact" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$" />
       <envs />
       <option name="emulateTerminal" value="true" />
@@ -140,8 +142,8 @@
         <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Test game::tests::test_game_results" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
-      <option name="command" value="test --package ChessAI --lib game::tests::test_game_results -- --exact" />
+    <configuration name="Test mcts::tests::test_model_save_and_load" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
+      <option name="command" value="test --package ChessAI --lib mcts::tests::test_model_save_and_load -- --exact" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$" />
       <envs />
       <option name="emulateTerminal" value="true" />
@@ -157,8 +159,8 @@
         <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Test mcts::tests" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
-      <option name="command" value="test --package ChessAI --lib mcts::tests" />
+    <configuration name="Test mcts::tests::test_real_model_evaluation" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
+      <option name="command" value="test --package ChessAI --lib mcts::tests::test_real_model_evaluation -- --exact" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$" />
       <envs />
       <option name="emulateTerminal" value="true" />
@@ -174,8 +176,8 @@
         <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Test mcts::tests::test_mcts_with_mock_model" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
-      <option name="command" value="test --package ChessAI --lib mcts::tests::test_mcts_with_mock_model -- --exact" />
+    <configuration name="Test test_mcts_with_real_model" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
+      <option name="command" value="test --package ChessAI --test game_tests test_mcts_with_real_model -- --exact" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$" />
       <envs />
       <option name="emulateTerminal" value="true" />
@@ -193,11 +195,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Cargo.Test mcts::tests::test_mcts_with_mock_model" />
-        <item itemvalue="Cargo.Test mcts::tests" />
-        <item itemvalue="Cargo.Test game::tests::test_game_results" />
+        <item itemvalue="Cargo.Test mcts::tests::test_model_save_and_load" />
         <item itemvalue="Cargo.Test game::tests" />
-        <item itemvalue="Cargo.Test game::tests::test_castling_rights_lost_after_king_moves" />
+        <item itemvalue="Cargo.Test mcts::tests::test_mcts_with_real_model" />
+        <item itemvalue="Cargo.Test mcts::tests::test_real_model_evaluation" />
+        <item itemvalue="Cargo.Test test_mcts_with_real_model" />
       </list>
     </recent_temporary>
   </component>
@@ -214,7 +216,7 @@
       <updated>1733348873476</updated>
       <workItem from="1733348874938" duration="1742000" />
       <workItem from="1733590798087" duration="17923000" />
-      <workItem from="1733665885891" duration="4738000" />
+      <workItem from="1733665885891" duration="6121000" />
     </task>
     <servers />
   </component>
