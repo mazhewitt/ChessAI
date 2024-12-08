@@ -38,60 +38,21 @@ impl GameState for ChessMCTSState {
     }
 }
 
-pub trait ChessModel {
+pub trait ChessModel: Send + Sync {
     fn evaluate(&self, game: &Game) -> ModelOutput;
 }
-
+#[derive(Clone)]
 pub struct ModelOutput {
     pub value: f64,        // Position evaluation (-1 to 1)
     pub policy: Vec<f64>,  // Probabilities for each legal move
 }
 
 
-impl Evaluator<ChessMCTS> for ChessEvaluator {
-    type StateEvaluation = ModelOutput;
 
-    fn evaluate_new_state(
-        &self,
-        state: &ChessMCTSState,
-        moves: &Vec<String>,
-        handle: Option<SearchHandle<ChessMCTS>>,
-    ) -> (Vec<NodeStats>, ModelOutput) {
-        let model_output = self.model.evaluate(&state.game);
-        let node_data = vec![NodeStats::default(); moves.len()];
-        if let Some(h) = handle {
-            if let Some(stats) = h.get_data() {
-                stats.update(model_output.value);
-            }
-        }
-        (node_data, model_output)
-    }
-
-    fn evaluate_existing_state(
-        &self,
-        _state: &ChessMCTSState,
-        eval: &ModelOutput,
-        handle: SearchHandle<ChessMCTS>,
-    ) -> ModelOutput {
-        if let Some(stats) = handle.get_data() {
-            stats.update(eval.value);
-        }
-        eval.clone()
-    }
-
-    fn interpret_evaluation_for_player(&self, eval: &f64, player: &String) -> i64 {
-        let value = if player == "White" {
-            *eval
-        } else {
-            -(*eval)  // Negate value for Black
-        };
-        (value * 10000.0) as i64
-    }
-}
-
-struct ChessEvaluator {
+pub struct ChessEvaluator {
     model: Box<dyn ChessModel>,  // Your trained model
 }
+
 impl ChessEvaluator {
     fn evaluate_state(&self, state: &ChessMCTSState) -> f64 {
         // Use the existing result_value() function for terminal states
@@ -111,7 +72,7 @@ impl ChessEvaluator {
 
 
 #[derive(Default)]
-struct NodeStats {
+pub struct NodeStats {
     visits: u32,
     total_value: f64,
     mean_value: f64,
@@ -129,6 +90,39 @@ impl MCTS for ChessMCTS {
 
     fn cycle_behaviour(&self) -> mcts::CycleBehaviour<Self> {
         mcts::CycleBehaviour::UseCurrentEvalWhenCycleDetected
+    }
+}
+
+impl Evaluator<ChessMCTS> for ChessEvaluator {
+    type StateEvaluation = ModelOutput;
+
+    fn evaluate_new_state(
+        &self,
+        state: &ChessMCTSState,
+        moves: &Vec<String>,
+        _: Option<SearchHandle<ChessMCTS>>,
+    ) -> (Vec<()>, ModelOutput) {
+        let model_output = self.model.evaluate(&state.game);
+        (vec![(); moves.len()], model_output)
+    }
+
+    fn evaluate_existing_state(
+        &self,
+        _state: &ChessMCTSState,
+        eval: &ModelOutput,
+        handle: SearchHandle<ChessMCTS>,
+    ) -> ModelOutput {
+        // Use the existing evaluation
+        eval.clone()
+    }
+
+    fn interpret_evaluation_for_player(&self, eval: &ModelOutput, player: &String) -> i64 {
+        let value = if player == "White" {
+            eval.value
+        } else {
+            -eval.value  // Negate value for Black
+        };
+        (value * 10000.0) as i64
     }
 }
 
@@ -153,7 +147,7 @@ mod tests {
         let mut mcts = MCTSManager::new(
             state,
             ChessMCTS,
-            ChessEvaluator,
+            ChessEvaluator { model: Box::new(MockModel) },
             UCTPolicy::new(0.5),
             ApproxTable::new(1024),
         );
@@ -183,7 +177,7 @@ mod tests {
 
         let mut mcts = MCTSManager::new(
             state,
-            MyMCTS,
+            ChessMCTS,
             ChessEvaluator { model: Box::new(MockModel) },
             UCTPolicy::new(0.5),
             ApproxTable::new(1024),
